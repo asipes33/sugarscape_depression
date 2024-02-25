@@ -54,6 +54,7 @@ class Agent:
         self.socialNetwork = {"father": None, "mother": None, "children": [], "friends": [], "creditors": [], "debtors": []}
         self.diseases = []
         self.fertile = False
+        self.depressed = False
         self.tribe = self.findTribe()
         self.timestep = birthday
         self.marginalRateOfSubstitution = 1
@@ -427,6 +428,8 @@ class Agent:
             self.doReproduction()
             self.doLending()
             self.doDisease()
+            self.depressedAgents()
+            self.doDepression()
             self.doAging()
             # If dead from aging, skip remainder of timestep
             if self.alive == False:
@@ -1337,6 +1340,58 @@ class Agent:
         self.familyHappiness = self.findFamilyHappiness()
         self.conflictHappiness = self.findConflictHappiness()
         self.happiness = self.findHappiness()
+
+    '''def depressedAgents(self):
+        #pop = [self.ID] #not making an actual array
+        #n = len(pop)
+        n = len(self.popList)
+        print(n)
+        if self.age < 18:
+            return
+        else:
+            dep_n = (n/(0.12))
+            p = (n/dep_n)
+            if self.ID % (math.floor(p)) == 0:
+                self.depressed = True
+            else:
+              self.depressed = False'''
+
+    def depressedAgents(self):
+        if self.ID % 10 == 0:
+            self.depressed = True
+        else:
+            self.depressed = False
+    
+    def depressionMetrics(self):
+        if self.age == 18:
+            self.depSugarMetabolism = (self.sugarMetabolism - 2)
+            self.depSpiceMetabolism = (self.spiceMetabolism - 2)
+            self.depMovement = (self.movement - 2)
+            self.depAggression = (self.aggressionFactor + 2)
+            self.depMaxFriends = (self.maxFriends - 3)
+            self.depHappiness = (self.happiness - 2)
+        else:
+            self.depSugarMetabolism = self.sugarMetabolism
+            self.depSpiceMetabolism = self.spiceMetabolism
+            self.depMovement = self.movement
+            self.depAggression = self.aggressionFactor
+            self.depMaxFriends = self.maxFriends
+            self.depHappiness = self.happiness
+
+    def doDepression(self):
+        if self.age < 18 or self.depressed == False:
+            return
+        elif self.age > 17 and self.depressed == True:
+            print(self.ID)
+            print(self.sugarMetabolism)
+            self.depressionMetrics()
+            self.sugarMetabolism = self.depSugarMetabolism
+            self.spiceMetabolism = self.depSpiceMetabolism
+            self.movement = self.depMovement
+            self.aggressionFactor = self.depAggression
+            self.maxFriends = self.depMaxFriends
+            self.happiness = self.depHappiness
+            print(self.sugarMetabolism)
 
     def __str__(self):
         return "{0}".format(self.ID)
