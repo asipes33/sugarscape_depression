@@ -9,7 +9,8 @@ class GUI:
         self.window = None
         self.canvas = None
         self.grid = [[None for j in range(self.sugarscape.environmentWidth)]for i in range(self.sugarscape.environmentHeight)]
-        self.colors = {"sugar": "#F2FA00", "spice": "#9B4722", "sugarAndSpice": "#CFB20E", "noSex": "#FA3232", "female": "#FA32FA", "male": "#3232FA", "pollution": "#803280",
+        #ADD IN COLOR FOR DEPRESSED AGENTS
+        self.colors = {"sugar": "#F2FA00", "spice": "#9B4722", "sugarAndSpice": "#CFB20E", "noSex": "#FA3232", "female": "#FA32FA", "male": "#3232FA", "pollution": "#803280", 
                          "green": "#32FA32", "blue": "#3232FA", "red": "#FA3232", "pink": "#FA32FA", "yellow": "#FAFA32", "teal": "#32FAFA", "purple": "#6432FA", "orange": "#FA6432",
                          "salmon": "#FA6464", "mint": "#64FA64", "blue2": "#3264FA"}
         self.widgets = {}
@@ -27,6 +28,7 @@ class GUI:
         self.stopSimulation = False
 
     def configureAgentColorNames(self):
+        #ADD IN DEPRESSION
         return ["Disease", "Sex", "Tribes"]
 
     def configureButtons(self, window):
@@ -245,6 +247,7 @@ class GUI:
             return self.colors["red"]
         elif len(agent.diseases) == 0 and self.activeColorOptions["agent"] == "Disease":
             return self.colors["blue"]
+        #CREATE OPTION TO VIEW DEPRESSED AGENTS
         return self.colors["noSex"]
 
     def recolorByResourceAmount(self, cell, fillColor):

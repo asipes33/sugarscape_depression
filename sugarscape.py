@@ -5,6 +5,7 @@ import cell
 import disease
 import environment
 import ethics
+import depression
 
 import getopt
 import hashlib
@@ -42,6 +43,7 @@ class Sugarscape:
         self.agents = []
         self.deadAgents = []
         self.diseases = []
+        #self.depressed = False
         self.configureAgents(configuration["startingAgents"])
         self.configureDiseases(configuration["startingDiseases"])
         self.gui = gui.GUI(self, self.configuration["interfaceHeight"], self.configuration["interfaceWidth"]) if configuration["headlessMode"] == False else None
@@ -64,6 +66,29 @@ class Sugarscape:
         diseaseConfig = oldDisease.configuration
         newDisease = disease.Disease(diseaseID, diseaseConfig)
         agent.catchDisease(newDisease)
+
+    '''def depressedAgents(self):
+        for i in self.agents:
+            n = len(self.agents)
+            dep_n = (n/(0.12))
+            p = (n/dep_n)
+            if agent.Agent.ID % (math.floor(p)) == 0:
+                self.depressed = True
+            else:
+                self.depressed = False
+
+    def doDepression(self):
+        for i in self.agents:
+            if agent.Agent.age < 18 or self.depressed == False:
+                return
+            elif agent.Agent.age > 17 and self.depressed == True:
+                print(agent.Agent.ID)
+                depression.Depression.depSugarMetabolism = (agent.Agent.sugarMetabolism - 2)
+                #self.depSpiceMetabolism = (self.spiceMetabolism - 2)
+                #self.depMovement = (self.movement - 2)
+                #self.depAggression = (self.aggressionFactor + 2)
+                #self.depMaxFriends = (self.maxFriends - 2)
+                #self.depHappiness = (self.happiness - 2)'''
 
     def addSpicePeak(self, startX, startY, radius, maxSpice):
         height = self.environment.height
@@ -201,6 +226,8 @@ class Sugarscape:
         if self.timestep >= self.maxTimestep:
             self.toggleEnd()
             return
+        #self.depressedAgents()
+        #self.doDepression()
         if "all" in self.debug or "sugarscape" in self.debug:
             print("Timestep: {0}\nLiving Agents: {1}".format(self.timestep, len(self.agents)))
         self.timestep += 1
