@@ -1,14 +1,14 @@
 {
     "__README__": "Default values for helper scripts. Details can be found in the README.",
     "dataCollectionOptions": {
-        "decisionModels": ["benthamHalfLookaheadBinary", "egoisticHalfLookaheadBinary", "rawSugarscape"],
+        "bashAlias": "bash",
+        "decisionModels": ["benthamHalfLookaheadBinary"],
         "jobUpdateFrequency": 5,
         "numParallelSimJobs": 1,
-        "numSeeds": 100,
-        "pathToBash": "bash",
-        "pathToPython": "python",
+        "numSeeds": 1,
         "plots": ["population", "meanttl", "starvationCombat", "wealth", "wealthNormalized", "meanAgeAtDeath"],
-        "plotTimesteps": 1000
+        "plotTimesteps": 10000,
+        "pythonAlias": "python"
     },
     "sugarscapeOptions": {
         "__README__": "Default values for Sugarscape simulation provided here. Details can be found in the README.",
@@ -17,6 +17,7 @@
         "agentDecisionModel": "none",
         "agentDecisionModelData": {},
         "agentDecisionModelFactor": [1, 1],
+        "agentDepressionAssignment": [12, 12],
         "agentFemaleInfertilityAge": [40, 50],
         "agentFemaleFertilityAge": [12, 15],
         "agentFertilityFactor": [1, 1],
@@ -76,9 +77,9 @@
         "logfile": "log.json",
         "profileMode": false,
         "screenshots": false,
-        "seed": -1,
+        "seed": 2953,
         "startingAgents": 250,
         "startingDiseases": 50,
-        "timesteps": 1000
+        "timesteps": 2000
     }
 }

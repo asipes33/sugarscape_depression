@@ -43,6 +43,7 @@ class Agent:
         self.decisionModelFactor = configuration["decisionModelFactor"]
         self.selfishnessFactor = configuration["selfishnessFactor"]
         self.decisionModel = configuration["decisionModel"]
+        self.depressionAssignment = configuration["depressionAssignment"]
 
         self.alive = True
         self.age = 0
@@ -85,7 +86,28 @@ class Agent:
         self.visionModifier = 0
         self.aggressionFactorModifier = 0
         self.fertilityFactorModifier = 0
+        self.starvationCount = 0
 
+        # Assign agent depression based on the percentage of the population with depression
+        dep = random.randint(1, 100)
+        if dep <= self.depressionAssignment:
+            self.depressed = True
+
+        # Change metrics for depressed agents
+        if self.depressed == True:
+            # Eating disorders: both metabolisms will be raised to correctly represent the concept of undereating with respect to this model - with a higher metabolism they will undereat more often
+            self.sugarMetabolism = math.ceil(self.sugarMetabolism + (self.sugarMetabolism*0.6205))
+            self.spiceMetabolism = math.ceil(self.spiceMetabolism + (self.spiceMetabolism*0.6205))
+            # Lessened movement: to represent fatigue, the agent's movement will be decreased
+            self.movement = math.ceil(self.movement - (self.movement*0.375 + self.movement*0.196))
+            # Aggression: to represent aggression, the agent's aggression factor will be increased
+            self.aggressionFactor = math.ceil(self.aggressionFactor + (self.aggressionFactor*0.145))
+            # Social withdrawal: to represent a degree of social withdrawal, the maximum number of friends an agent can have will be lowered
+            self.maxFriends = math.ceil(self.maxFriends - (self.maxFriends*0.3667))
+            # An overall happiness penalty - lowering the agent's happiness - will be added to increase the emotions associated with depression
+            self.happiness = math.ceil(self.happiness - (self.happiness*0.5763))
+    
+    
     def addChildToCell(self, mate, cell, childConfiguration):
         sugarscape = self.cell.environment.sugarscape
         childID = sugarscape.generateAgentID()
@@ -428,8 +450,6 @@ class Agent:
             self.doReproduction()
             self.doLending()
             self.doDisease()
-            self.depressedAgents()
-            self.doDepression()
             self.doAging()
             # If dead from aging, skip remainder of timestep
             if self.alive == False:
@@ -697,7 +717,8 @@ class Agent:
         "vision": [self.vision, mate.vision],
         "visionMode": [self.visionMode, mate.visionMode],
         "universalSpice": [self.universalSpice, mate.universalSpice],
-        "universalSugar": [self.universalSugar, mate.universalSugar]
+        "universalSugar": [self.universalSugar, mate.universalSugar],
+        "depressionAssignment": [0, 0]
         }
         childEndowment = {"seed": self.seed}
         randomNumberReset = random.getstate()
@@ -1340,58 +1361,6 @@ class Agent:
         self.familyHappiness = self.findFamilyHappiness()
         self.conflictHappiness = self.findConflictHappiness()
         self.happiness = self.findHappiness()
-
-    '''def depressedAgents(self):
-        #pop = [self.ID] #not making an actual array
-        #n = len(pop)
-        n = len(self.popList)
-        print(n)
-        if self.age < 18:
-            return
-        else:
-            dep_n = (n/(0.12))
-            p = (n/dep_n)
-            if self.ID % (math.floor(p)) == 0:
-                self.depressed = True
-            else:
-              self.depressed = False'''
-
-    def depressedAgents(self):
-        if self.ID % 10 == 0:
-            self.depressed = True
-        else:
-            self.depressed = False
-    
-    def depressionMetrics(self):
-        if self.age == 18:
-            self.depSugarMetabolism = (self.sugarMetabolism - 2)
-            self.depSpiceMetabolism = (self.spiceMetabolism - 2)
-            self.depMovement = (self.movement - 2)
-            self.depAggression = (self.aggressionFactor + 2)
-            self.depMaxFriends = (self.maxFriends - 3)
-            self.depHappiness = (self.happiness - 2)
-        else:
-            self.depSugarMetabolism = self.sugarMetabolism
-            self.depSpiceMetabolism = self.spiceMetabolism
-            self.depMovement = self.movement
-            self.depAggression = self.aggressionFactor
-            self.depMaxFriends = self.maxFriends
-            self.depHappiness = self.happiness
-
-    def doDepression(self):
-        if self.age < 18 or self.depressed == False:
-            return
-        elif self.age > 17 and self.depressed == True:
-            print(self.ID)
-            print(self.sugarMetabolism)
-            self.depressionMetrics()
-            self.sugarMetabolism = self.depSugarMetabolism
-            self.spiceMetabolism = self.depSpiceMetabolism
-            self.movement = self.depMovement
-            self.aggressionFactor = self.depAggression
-            self.maxFriends = self.depMaxFriends
-            self.happiness = self.depHappiness
-            print(self.sugarMetabolism)
 
     def __str__(self):
         return "{0}".format(self.ID)

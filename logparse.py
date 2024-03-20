@@ -9,11 +9,8 @@ def parseLog(logFile):
     entries = json.loads(file.read())
     timesteps = -1
 
-    data = {"population": 0, "agentWealthCollected": 0, "agentWealthTotal": 0,
-            "environmentWealthCreated": 0, "environmentWealthTotal": 0, "meanHappiness": 0, "meanWealthHappiness": 0, 
-            "meanHealthHappiness": 0, "meanSocialHappiness": 0, "meanFamilyHappiness": 0, "meanConflictHappiness": 0,
-            "agentStarvationDeaths": 0, "agentMeanTimeToLive": 0,
-            "agentMeanTimeToLiveAgeLimited": 0, "agentReproduced": 0}
+    data = {"population": 0, "normPopulation": 0, "depPopulation": 0, "normalDeath": 0, "depressionDeath": 0, 
+            "agentWealthTotalNorm": 0, "agentWealthTotalDep": 0, "meanWealthNorm": 0, "meanWealthDep": 0}
 
     print(data.keys())
     for entry in entries:
